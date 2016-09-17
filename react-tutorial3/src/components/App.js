@@ -1,4 +1,5 @@
 import React from 'react';
+import update from 'react-addons-update'
 
 class App extends React.Component{
 	render(){
@@ -22,6 +23,15 @@ class Contacts extends React.Component {
 		}
 	}
 
+	_insertContact(name, phone){
+		let newState = update(this.state, {
+			contactData:{
+				$push: [{"name": name, "phone": phone}]	
+			}	
+		});	
+		this.setState(newState);
+	}
+
 	render(){
 		return (
 			<div>
@@ -33,6 +43,7 @@ class Contacts extends React.Component {
 						);	
 					})}
 				</ul>
+				<ContactCreator onInsert={this._insertContact.bind(this)}/>
 			</div>
 		);	
 	}
@@ -43,6 +54,57 @@ class ContactInfo extends React.Component{
 		return (
 			<li>{this.props.name} {this.props.phone}</li>	
 		);	
+	}
+}
+
+
+class ContactCreator extends React.Component{
+	constructor(props){
+		super(props);
+		// configure default state
+		this.state = {
+			name: "",
+			phone: ""
+		};
+	}
+
+	// 여기서 state를 변경시켜줘야되
+	// 그렇지 않으면 값이 안바뀜
+	handleChange(e){
+		var nextState = {};
+		nextState[e.target.name] = e.target.value;
+		this.setState(nextState);
+	}
+
+	handleClick(){
+		// 부모의 state의 data 배열에 값 추가해주기
+		this.props.onInsert(this.state.name, this.state.phone);	
+		this.setState({
+			name: "",
+			phone: ""
+		});
+	}
+
+	render(){
+		return (
+			<div>	
+				<p>
+					<input type="text" 
+									name="name" 
+									placeholder="name" 
+									value={this.state.name}
+									onChange={this.handleChange.bind(this)}/>
+					<input type="text" 
+									name="phone" 
+									placeholder="phone" 
+									value={this.state.phone}
+									onChange={this.handleChange.bind(this)}/>
+					<button onClick={this.handleClick.bind(this)}>
+						Insert
+					</button>
+				</p>
+			</div>	
+		);
 	}
 }
 

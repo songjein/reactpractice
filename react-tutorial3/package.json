@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-		"start": "webpack-dev-server --hot --host 0.0.0.0"
+    "start": "webpack-dev-server --hot --host 0.0.0.0"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "react": "^15.3.1",
+    "react-addons-update": "^15.3.1",
     "react-dom": "^15.3.1"
   },
   "devDependencies": {
